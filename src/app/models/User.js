@@ -11,9 +11,12 @@ class User extends Model {
             },
             {
                 sequelize,
+                tableName: 'users',
             },
         );
     }
 }
+
+export default User;
 
 
