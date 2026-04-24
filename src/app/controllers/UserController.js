@@ -10,10 +10,12 @@ delete: deletar um dado especifico
 nunca esses métodos podem se repetir, ou seja, não pode ter mais de um store, index, show, update ou delete em um controller. 
 Se precisar criar outro método, tem que ser com outro nome.
 */ 
+import bcrypt from 'bcrypt';
 import { response } from 'express';
 import User from '../models/User.js';
 import { v4 } from 'uuid';
 import * as Yup from 'yup';
+
 
 class UserController {
 
@@ -22,7 +24,7 @@ class UserController {
         const schema = Yup.object({
             name: Yup.string().required(),
             email: Yup.string().email().required(),
-            password_hash: Yup.string().min(6).required(),
+            password: Yup.string().min(6).required(),
             admin: Yup.boolean().required()
         })
 
@@ -34,7 +36,7 @@ class UserController {
         }
       
        
-        const {name, email, password_hash, admin}= request.body;
+        const {name, email, password, admin}= request.body;
 
         const existingUser = await User.findOne({
             where: { 
@@ -45,6 +47,8 @@ class UserController {
             .status(400)
             .json({message: 'Email already taken!'})
         }
+
+        const password_hash = await bcrypt.hash(password, 10);
         
     const user = await User.create({
         id: v4(),
