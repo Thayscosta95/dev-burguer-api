@@ -23,10 +23,16 @@ class ProductController {
             name,
             price,
             category,
-            image: filename,
+            path: filename,
         });
        
         return response.status(201).json(newProduct);
+    }
+
+    async index(_request, response) {
+        const products = await Product.findAll();   
+        
+        return response.status(200).json(products);
     }
 }
 
