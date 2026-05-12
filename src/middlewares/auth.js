@@ -17,11 +17,10 @@ const authMiddleware = (request, response, next) => {
 
          request.userId = decoded.id;
     });
-
+    next();
 } catch (_error) {
     return response.status(401).json({ error: 'Token is invalid' });
 }
-
 };
 
 export default authMiddleware;
