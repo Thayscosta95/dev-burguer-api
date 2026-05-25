@@ -46,11 +46,12 @@ class CategoryController {
     }
 
     const { name } = request.body;
+    const { id } = request.params;
 
     let path;
     if (request.file) {
       const { filename } = request.file;
-      path = file.name;
+      path = filename;
     }
 
     const existingCategory = await Category.findOne({
@@ -63,12 +64,19 @@ class CategoryController {
       return response.status(400).json({ error: 'Category already exists' });
     }
 
-    const newCategory = await Category.update({
+    await Category.update(
+      {
       name,
       path,
-    });
+    },
+      {
+        where: {
+          id,
+        },
+      }
+    );
 
-    return response.status(201).json(newCategory);
+    return response.status(201).json();
   }
 
   async index(_request, response) {
