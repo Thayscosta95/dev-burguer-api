@@ -54,8 +54,13 @@ routes.put(
 
 routes.post(
   '/orders', 
-  adminMiddleware,
   OrderController.store,
   );
+
+  routes.put(
+  '/orders/:id',
+  adminMiddleware,
+  OrderController.update,
+);
 
 export default routes;

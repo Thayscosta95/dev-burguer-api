@@ -20,6 +20,9 @@ class Category extends Model {
     );
     return this;
   }
+
+  
+
 }
 
 export default Category;
