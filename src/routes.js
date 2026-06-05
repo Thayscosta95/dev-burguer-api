@@ -6,15 +6,15 @@ import SessionController from './app/controllers/SessionController.js';
 import ProductController from './app/controllers/ProductController.js';
 import CategoryController from './app/controllers/CategoryController.js';
 import multerConfig from './config/multer.cjs';
-import authMiddleware from './middlewares/auth.js';
-import adminMiddleware from './middlewares/admin.js';
+import authMiddleware from './app/middlewares/auth.js';
+import adminMiddleware from './app/middlewares/admin.js';
 import OrderController from './app/controllers/OrderController.js';
 
 const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/users', UserController.store);
-routes.post('/session', SessionController.store);
+routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware); //valida o token para as rotas abaixo//
 
@@ -61,6 +61,12 @@ routes.post(
   '/orders/:id',
   adminMiddleware,
   OrderController.update,
+);
+
+routes.get(
+  '/orders',
+  adminMiddleware,
+  OrderController.index,
 );
 
 export default routes;
